@@ -9,12 +9,12 @@ self.MonacoEnvironment = {
 }
 
 
-const appendNotification = () => {
+const appendNotification = message => {
   const body = document.getElementsByTagName('body')[0]
 
   body.insertAdjacentHTML(
     'afterbegin',
-    '<div class="notification" id="notification">Copied to clipboard.</div>'
+    `<div class="notification" id="notification">${message}</div>`
   )
 
   const notification = document.getElementById('notification')
@@ -140,7 +140,8 @@ import('./monaco-features.js').then(() => {
 
     putGist(value, language)
       .then(res => {
-        location.pathname = `/${res.id}`
+        location.href = `${location.origin}/#${res.id}`
+        appendNotification('Saved.')
       })
       .catch(error => {
         console.log('error: ', error);
@@ -156,12 +157,12 @@ import('./monaco-features.js').then(() => {
   shareCodeButton.onclick = e => {
     e.preventDefault()
     navigator.clipboard.writeText(location.href)
-    appendNotification()
+    appendNotification('Copied to clipboard.')
   }
 
 
   window.onload = () => {
-    const gistId = location.pathname.substring(1)
+    const gistId = location.hash.substring(1)
 
     if (!gistId) {
       return
