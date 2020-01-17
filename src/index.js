@@ -26,7 +26,7 @@ const appendNotification = message => {
       setTimeout(() => {
         notification.remove()
       }, 100)
-    }, 700)
+    }, 1200)
   }, 100)
 }
 
