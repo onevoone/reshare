@@ -180,7 +180,7 @@ import('./monaco-features.js').then(() => {
   colorSchemeToggle.onclick = e => {
     e.preventDefault()
 
-    colorScheme.toggle()
+    self.colorScheme.toggle()
     monaco.editor.setTheme(colorScheme.getEditorTheme())
   }
 

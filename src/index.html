@@ -39,9 +39,9 @@
     <div id="container"></div>
 
     <script>
-      const STORAGE_KEY = 'user-color-scheme'
+      self.STORAGE_KEY = 'user-color-scheme'
 
-      const colorScheme = {
+      self.colorScheme = {
         currentColor: localStorage.getItem(STORAGE_KEY) || 'dark',
         init: function() {
           localStorage.setItem(STORAGE_KEY, this.currentColor)
@@ -63,7 +63,7 @@
         },
       }
 
-      colorScheme.init();
+      self.colorScheme.init();
     </script>
 
     <script src="index.js"></script>
