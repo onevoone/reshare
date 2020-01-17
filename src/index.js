@@ -53,6 +53,7 @@ import('./monaco-features.js').then(() => {
     overviewRulerBorder: false,
     renderLineHighlight: 'none',
     minimap: { enabled: false },
+    smoothScrolling: true,
   })
 
   editor.setPosition({ column: initialText.length + 1, lineNumber: 1 })
@@ -129,12 +130,10 @@ import('./monaco-features.js').then(() => {
 
   /**
    *
-   * save gist handler
+   * save gist handlers
    * 
    */
-  saveCodeButton.onclick = e => {
-    e.preventDefault()
-
+  const handlePutGist = () => {
     const value = editor.getValue()
     const language = editor.getModel()._languageIdentifier.language
 
@@ -148,6 +147,17 @@ import('./monaco-features.js').then(() => {
       })
   }
 
+  saveCodeButton.onclick = e => {
+    e.preventDefault()
+
+    handlePutGist()
+  }
+
+  editor.addCommand(
+    monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S,
+    () => handlePutGist()
+  )
+    
 
   /**
    *
@@ -157,7 +167,7 @@ import('./monaco-features.js').then(() => {
   shareCodeButton.onclick = e => {
     e.preventDefault()
     navigator.clipboard.writeText(location.href)
-    appendNotification('Copied to clipboard.')
+    appendNotification('Page URL copied to clipboard.')
   }
 
 
