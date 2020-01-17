@@ -32,22 +32,23 @@ const appendNotification = message => {
 
 
 import('./monaco-features.js').then(() => {
+  const container = document.getElementById('container')
   const createNewButton = document.getElementById('create-new-btn')
   const saveCodeButton = document.getElementById('save-code-btn')
   const shareCodeButton = document.getElementById('share-code-btn')
   const languageList = document.getElementById('language-list')
   const selectedLanguage = document.getElementById('selected-language')
+  const colorSchemeToggle = document.getElementById('color-scheme-toggle')
 
   const initialLanguage = 'javascript'
   const initialText = 'const write = "here.."'
 
-
-  const editor = monaco.editor.create(document.getElementById('container'), {
+  const editor = monaco.editor.create(container, {
     value: initialText,
     language: initialLanguage,
     tabSize: 2,
     scrollBeyondLastLine: false,
-    theme: 'vs-dark',
+    theme: self.colorScheme.getEditorTheme(),
     hideCursorInOverviewRuler: true,
     matchBrackets: true,
     overviewRulerBorder: false,
@@ -157,7 +158,7 @@ import('./monaco-features.js').then(() => {
     monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S,
     () => handlePutGist()
   )
-    
+
 
   /**
    *
@@ -169,6 +170,20 @@ import('./monaco-features.js').then(() => {
     navigator.clipboard.writeText(location.href)
     appendNotification('Page URL copied to clipboard.')
   }
+
+
+  /**
+   *
+   * change user color scheme handler
+   * 
+   */
+  colorSchemeToggle.onclick = e => {
+    e.preventDefault()
+
+    colorScheme.toggle()
+    monaco.editor.setTheme(colorScheme.getEditorTheme())
+  }
+
 
 
   window.onload = () => {
