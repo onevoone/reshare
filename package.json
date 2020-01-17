@@ -2,7 +2,7 @@
   "name": "reshare",
   "version": "1.0.0",
   "description": "simple code share",
-  "main": "index.js",
+  "main": "index.html",
   "scripts": {
     "start": "parcel src/index.html",
     "build": "parcel build src/index.html"
@@ -10,7 +10,6 @@
   "author": "onevoone",
   "license": "ISC",
   "dependencies": {
-    "detectlanguage": "^1.2.2",
     "firebase": "^7.6.2",
     "monaco-editor": "^0.19.2",
     "monaco-languages": "^1.9.2"
