@@ -1,181 +1,71 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Share Code Online</title>
-    <meta
-      name="description"
-      content=""
-    />
+    <title>Reshare</title>
+    <meta name="description" content="Share your code for free" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="currentcolor" />
 
-    <style type="text/css" src="styles.css"></style>
-
-    <style>
-
-      html,
-      body {
-        height: 100%;
-        margin: 0;
-      }
-
-      body {
-        --borderColor: #333;
-        --mainColor: #d4d4d4;
-        --textColor: #555;
-        --hoverTextColor: #ccc;
-        --bgColor: #1e1e1e;
-        --bgColorRGB: 30, 30, 30;
-
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        background-color: var(--bgColor);
-        color: var(--mainColor);
-        font-family: monospace;
-        fill: currentColor;
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
-      #container {
-        margin: 10px 5px;
-        margin-left: -68px;
-        height: 90%;
-        width: 90%;
-        min-width: 360px;
-        max-width: 1100px;
-        overflow: hidden;
-      }
-
-      .toolbar {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        padding-left: 10px;
-        height: 32px;
-        width: 100%;
-        border-bottom: 1px solid var(--borderColor);
-        background-color: var(--bgColor);
-        z-index: 200;
-      }
-
-      h1 {
-        margin: 0;
-        padding: 0;
-        padding-right: 10px;
-        font-size: 18px;
-        color: var(--textColor);
-        line-height: 30px;
-      }
-
-      h1:hover {
-        color: var(--hoverTextColor);
-      }
-
-      .toolbar > *,
-      .nav-list > li {
-        height: 32px;
-        border-right: 1px solid var(--borderColor);
-      }
-
-      .nav-list {
-        display: flex;
-        padding: 0;
-        margin: 0;
-        list-style-type: none;
-      }
-
-      .menu-button {
-        position: relative;
-        display: block;
-        margin: 0;
-        padding: 2px 12px;
-        height: 100%;
-        min-width: 50px;
-        width: 100%;
-        font-family: inherit;
-        font-size: 16px;
-        text-align: left;
-        color: var(--textColor);
-        line-height: 28px;
-        background-color: transparent;
-        outline: none;
-        border: none;
-        cursor: pointer;
-      }
-
-      .menu-button:hover,
-      .menu-button:focus {
-        color: var(--hoverTextColor);
-      }
-
-
-      .menu-dropdown-list {
-        display: none;
-        position: absolute;
-        padding: 0;
-        margin: 0;
-        list-style: none;
-        display: none;
-        border: 1px solid var(--borderColor);
-        border-top: none;
-        min-width: max-content;
-        max-height: calc(100vh - 65px);
-        background-color: var(--bgColor);
-        overflow-y: scroll;
-      }
-
-      .menu-dropdown-list:hover,
-      #selected-language:hover + .menu-dropdown-list {
-        display: block;
-      }
-
-
-      .notification {
-        position: absolute;
-        top: 0;
-        height: 32px;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-bottom: 1px solid var(--borderColor);
-        background-color: rgba(var(--bgColorRGB), 0.8);
-        z-index: 100;
-        transition: top 200ms ease;
-      }
-
-    </style>
-
+    <link rel="stylesheet" href="styles.css">
   </head>
   <body>
     <div id="toolbar" class="toolbar">
-      <h1>Reshare</h1>
-      <nav>
-        <ul class="nav-list">
-          <li>
-            <button type="button" id="create-new-btn" class="menu-button" aria-label="Create new">New</button>
-          </li>
-          <li>
-            <button type="button" id="save-code-btn" class="menu-button" aria-label="Save code">Save</button>
-          </li>
-          <li>
-            <button type="button" id="share-code-btn" class="menu-button" aria-label="Copy url link" title="Copy url link">Share</button>
-          </li>
-          <li>
-            <span id="selected-language" class="menu-button">javascript</span>
-            <ul id="language-list" class="menu-dropdown-list"></ul>
-          </li>
-        </ul>
-      </nav>
-      <!-- <select id="language-selector" aria-label="Select language"></select> -->
+      <div class="main-menu">
+        <h1>
+          <a href="/" rel="noreferrer noopener">Reshare</a>
+        </h1>
+        <nav>
+          <ul class="toolbar-list">
+            <li>
+              <button type="button" id="create-new-btn" class="menu-button" aria-label="Create new">New</button>
+            </li>
+            <li>
+              <button type="button" id="save-code-btn" class="menu-button" aria-label="Save code" title="Ctrl + S">Save</button>
+            </li>
+            <li>
+              <button type="button" id="share-code-btn" class="menu-button" aria-label="Copy url link" title="Copy url link">Share</button>
+            </li>
+            <li>
+              <span id="selected-language" class="menu-button">javascript</span>
+              <ul id="language-list" class="menu-dropdown-list"></ul>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <button type="button" id="color-scheme-toggle" class="color-scheme-btn" aria-label="Switch color scheme" title="Switch color scheme">dark</button>
     </div>
 
     <div id="container"></div>
+
+    <script>
+      self.STORAGE_KEY = 'user-color-scheme'
+
+      self.colorScheme = {
+        currentColor: localStorage.getItem(STORAGE_KEY) || 'dark',
+        init: function() {
+          localStorage.setItem(STORAGE_KEY, this.currentColor)
+          document.getElementById('color-scheme-toggle').innerHTML = this.currentColor
+          document.documentElement.setAttribute('data-user-color-scheme', this.currentColor)
+        },
+        toggle: function() {
+          if (this.currentColor === 'dark') {
+            this.currentColor = 'light'
+          } else {
+            this.currentColor = 'dark'
+          }
+          localStorage.setItem(STORAGE_KEY, this.currentColor)
+          document.getElementById('color-scheme-toggle').innerHTML = this.currentColor
+          document.documentElement.setAttribute('data-user-color-scheme', this.currentColor)
+        },
+        getEditorTheme: function() {
+          return this.currentColor === 'dark' ? 'vs-dark' : 'vs-light'
+        },
+      }
+
+      self.colorScheme.init();
+    </script>
 
     <script src="index.js"></script>
   </body>

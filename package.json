@@ -2,7 +2,7 @@
   "name": "reshare",
   "version": "1.0.0",
   "description": "simple code share",
-  "main": "index.js",
+  "main": "index.html",
   "scripts": {
     "start": "parcel src/index.html",
     "build": "parcel build src/index.html"
@@ -10,13 +10,24 @@
   "author": "onevoone",
   "license": "ISC",
   "dependencies": {
-    "detectlanguage": "^1.2.2",
     "firebase": "^7.6.2",
     "monaco-editor": "^0.19.2",
     "monaco-languages": "^1.9.2"
   },
   "devDependencies": {
     "parcel-bundler": "^1.12.4",
-    "parcel-plugin-bundle-visualiser": "^1.2.0"
+    "parcel-plugin-bundle-visualiser": "^1.2.0",
+    "parcel-plugin-pwa-manifest": "^2.9.1"
+  },
+  "pwaManifest": {
+    "name": "Reshare",
+    "shortName": "Reshare",
+    "startURL": "/",
+    "theme": "#1e1e1e",
+    "generateIconOptions": {
+      "baseIcon": "src/icon.svg",
+      "sizes": [192, 384, 512],
+      "genFavicons": true
+    }
   }
 }

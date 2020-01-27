@@ -26,33 +26,35 @@ const appendNotification = message => {
       setTimeout(() => {
         notification.remove()
       }, 100)
-    }, 700)
+    }, 1200)
   }, 100)
 }
 
 
 import('./monaco-features.js').then(() => {
+  const container = document.getElementById('container')
   const createNewButton = document.getElementById('create-new-btn')
   const saveCodeButton = document.getElementById('save-code-btn')
   const shareCodeButton = document.getElementById('share-code-btn')
   const languageList = document.getElementById('language-list')
   const selectedLanguage = document.getElementById('selected-language')
+  const colorSchemeToggle = document.getElementById('color-scheme-toggle')
 
   const initialLanguage = 'javascript'
   const initialText = 'const write = "here.."'
 
-
-  const editor = monaco.editor.create(document.getElementById('container'), {
+  const editor = monaco.editor.create(container, {
     value: initialText,
     language: initialLanguage,
     tabSize: 2,
     scrollBeyondLastLine: false,
-    theme: 'vs-dark',
+    theme: self.colorScheme.getEditorTheme(),
     hideCursorInOverviewRuler: true,
     matchBrackets: true,
     overviewRulerBorder: false,
     renderLineHighlight: 'none',
     minimap: { enabled: false },
+    smoothScrolling: true,
   })
 
   editor.setPosition({ column: initialText.length + 1, lineNumber: 1 })
@@ -129,12 +131,10 @@ import('./monaco-features.js').then(() => {
 
   /**
    *
-   * save gist handler
+   * save gist handlers
    * 
    */
-  saveCodeButton.onclick = e => {
-    e.preventDefault()
-
+  const handlePutGist = () => {
     const value = editor.getValue()
     const language = editor.getModel()._languageIdentifier.language
 
@@ -148,6 +148,17 @@ import('./monaco-features.js').then(() => {
       })
   }
 
+  saveCodeButton.onclick = e => {
+    e.preventDefault()
+
+    handlePutGist()
+  }
+
+  editor.addCommand(
+    monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S,
+    () => handlePutGist()
+  )
+
 
   /**
    *
@@ -157,8 +168,22 @@ import('./monaco-features.js').then(() => {
   shareCodeButton.onclick = e => {
     e.preventDefault()
     navigator.clipboard.writeText(location.href)
-    appendNotification('Copied to clipboard.')
+    appendNotification('Page URL copied to clipboard.')
   }
+
+
+  /**
+   *
+   * change user color scheme handler
+   * 
+   */
+  colorSchemeToggle.onclick = e => {
+    e.preventDefault()
+
+    self.colorScheme.toggle()
+    monaco.editor.setTheme(colorScheme.getEditorTheme())
+  }
+
 
 
   window.onload = () => {
