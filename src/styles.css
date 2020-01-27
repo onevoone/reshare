@@ -60,12 +60,10 @@ body {
   justify-content: space-between;
   align-items: center;
   padding-left: 10px;
-  height: 32px;
+  min-height: 32px;
   width: 100%;
   border-bottom: 1px solid var(--border-color);
   background-color: var(--toolbar-bg-color);
-  overflow-y: hidden;
-  overflow-x: scroll;
   z-index: 200;
 }
 
@@ -192,6 +190,11 @@ a:hover, .link:hover {
 
 
 @media screen and (max-width: 470px) {
+  .toolbar {
+    overflow-y: hidden;
+    overflow-x: scroll;
+  }
+
   .menu-dropdown-list {
     right: 0;
   }
